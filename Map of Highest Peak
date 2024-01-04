@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
+        int n = isWater.size();
+        int m = isWater[0].size();
+
+        vector<vector<bool>> vis(n, vector<bool>(m,0));
+        vector<vector<int>> res(n, vector<int>(m,0));
+
+        int delRow[] = {-1, 0, +1, 0};
+        int delCol[] = {0, -1, 0, +1};
+
+        queue<pair<int, pair<int, int>>> q;
+
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(isWater[i][j]) {
+                    q.push({0,{i,j}});
+                    vis[i][j] = true;
+                }
+            }
+        }
+
+        while(!q.empty()) {
+            int size = q.size();
+            for(int i = 0; i < size; i++) {
+                auto it = q.front();
+                q.pop();
+
+                int dist = it.first;
+                int row = it.second.first;
+                int col = it.second.second;
+
+                for(int i = 0; i < 4; i++) {
+                    int nrow = row + delRow[i];
+                    int ncol = col + delCol[i];
+
+                    if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && !vis[nrow][ncol]) {
+                        vis[nrow][ncol] = true;
+                        res[nrow][ncol] = 1 + dist;
+                        q.push({1+dist,{nrow, ncol}});
+                    }
+                }
+
+            }
+        }
+        return res;
+    }
+};
