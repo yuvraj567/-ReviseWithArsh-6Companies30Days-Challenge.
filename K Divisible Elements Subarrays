@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int countDistinct(vector<int>& nums, int k, int p) {
+        int res = 0;
+        int n = nums.size();
+        set<vector<int>> st;
+
+        for(int i = 0; i < n; i++) {
+            vector<int> temp;
+            int cnt = 0;
+
+            for(int j = i; j < n; j++) {
+
+                if(cnt != k && nums[j]%p != 0) {
+                    temp.push_back(nums[j]);
+                    st.insert(temp);
+                }
+                else if(cnt != k && nums[j]%p == 0) {
+                    temp.push_back(nums[j]);
+                    st.insert(temp);
+                    cnt++;
+                } 
+                else if(cnt == k && nums[j]%p != 0) {
+                    temp.push_back(nums[j]);
+                    st.insert(temp);
+                } 
+                else if(cnt == k && nums[j]%p == 0) {
+                    break;
+                }
+            }
+        }
+        return st.size();
+    }
+};
