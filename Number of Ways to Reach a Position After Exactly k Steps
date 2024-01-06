@@ -1,0 +1,35 @@
+You are given two positive integers startPos and endPos. Initially, you are standing at position startPos on an infinite number line. With one step, you can move either one position to the left, or one position to the right.
+
+Given a positive integer k, return the number of different ways to reach the position endPos starting from startPos, such that you perform exactly k steps. Since the answer may be very large, return it modulo 109 + 7.
+
+Two ways are considered different if the order of the steps made is not exactly the same.
+
+Note that the number line includes negative integers.
+
+CODE: 
+class Solution {
+public:
+    long long MOD = 1e9+7;
+    long long solve(int startPos, int endPos, int k, vector<vector<long long>>& dp) {
+        if(startPos == endPos && k == 0) {
+            return 1;
+        }
+        if(k == 0) {
+            return 0;
+        }
+
+        if(dp[startPos+1000][k] != -1) {
+            return dp[startPos+1000][k];
+        }
+
+        long long ans1 = solve(startPos+1, endPos, k-1, dp);
+        long long ans2 = solve(startPos-1, endPos, k-1, dp);
+
+        return dp[startPos+1000][k] = (ans1+ans2) % MOD;
+    }
+    int numberOfWays(int startPos, int endPos, int k) {
+        vector<vector<long long>> dp(30001, vector<long long>(1001, -1));
+
+        return solve(startPos, endPos, k, dp) % MOD;
+    }
+};
