@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        string res = "";
+        int n = secret.size();
+
+        int bull = 0, cow = 0;
+        set<int> unique, unique2;
+
+        for(int i = 0; i < n; i++) {
+            if(secret[i] == guess[i]) {
+                bull++;
+                unique.insert(i);
+            }
+        }
+
+        for(int i = 0; i < n; i++) {
+            if(unique.find(i) == unique.end()) {
+                for(int j = 0; j < n; j++) {
+                    if(secret[i] == guess[j] && unique.find(j) == unique.end() && unique2.find(j) == unique2.end()) {
+                        cow++;
+                        unique2.insert(j);
+                        break;
+                    }
+                }
+            }
+        }
+        return res = (to_string(bull)) + 'A'  + to_string(cow) + 'B';
+    }
+};
