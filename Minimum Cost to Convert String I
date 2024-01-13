@@ -1,0 +1,49 @@
+class Solution {
+public:
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
+        int maxVal = 1e9;
+        int letter = 26;
+        
+        vector<vector<long long>> dp(letter, vector<long long>(letter,maxVal));
+        
+        //same node ------> same node | cost = 0 
+        for(int i = 0; i < 26; i++) {
+            dp[i][i] = 0;
+        }
+        
+        //filling the table with initial value
+        for(int i = 0; i < original.size(); i++) {
+            long long src = original[i] -'a';
+            long long dest = changed[i] -'a';
+            long long weight = cost[i];
+            
+            dp[src][dest] = min(weight, dp[src][dest]);
+        }
+        
+        //floyd warshall
+        for(int k = 0; k < letter; k++) {
+            for(int i = 0; i < letter; i++) {
+                for(int j = 0; j < letter; j++) {
+                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j]);
+                }
+            }
+        }
+        
+        long long size = source.size();
+        long long reqCost = 0;
+        
+        //computing the result
+        for(int i = 0; i < size; i++) {
+            int src = source[i]-'a';
+            int dest = target[i]-'a';
+            
+            if(dp[src][dest] != maxVal) {
+                reqCost += dp[src][dest];
+            } 
+            else {
+                return -1;    
+            }
+        }
+        return reqCost;
+    }
+};
