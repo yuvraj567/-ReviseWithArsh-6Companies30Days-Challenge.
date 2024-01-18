@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int findPairs(vector<int>& nums, int k) {
+        unordered_map<int, int> mp;
+        set<pair<int,int>> st;
+
+        for(int i = 0; i < nums.size(); i++) {
+            mp[nums[i]]++;
+        }
+
+        int cnt = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            int curr = nums[i];
+            int req = (k+curr);
+
+            if(mp.find(req) != mp.end()) {
+                if(curr == req && mp[curr] > 1) {
+                    st.insert({min(curr,req), max(curr, req)});
+                }
+                else if(curr != req) {
+                    st.insert({min(curr,req), max(curr, req)});
+                }
+            }
+        }
+        return st.size();
+    }
+};
