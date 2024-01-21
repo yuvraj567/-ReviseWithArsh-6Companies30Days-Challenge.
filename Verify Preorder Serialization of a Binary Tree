@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool isValidSerialization(string preorder) {
+        stringstream ss(preorder);
+        string temp;
+        
+        int numberOfSlotsAvailable = 1;
+        while(getline(ss,temp,',')) {
+            numberOfSlotsAvailable--;
+
+            if(numberOfSlotsAvailable < 0) 
+                return false;
+            
+            if(temp != "#") {
+                numberOfSlotsAvailable += 2;
+            }
+        }
+        return numberOfSlotsAvailable == 0;
+    }
+};
