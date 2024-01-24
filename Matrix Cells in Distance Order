@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<vector<int>> allCellsDistOrder(int r, int c, int x, int y) {
+        const int N = 102;
+        bool vis[N][N] = {0};
+
+        vector<vector<int>> ans;
+        queue<pair<int, int>> q;
+
+        int dx[4] = {0, 0, 1, -1};
+        int dy[4] = {1, -1, 0, 0};
+        
+        q.push({x, y});
+
+        while (!q.empty()) {
+            auto [i, j] = q.front();
+            q.pop();
+
+            if (i < 0 || j < 0 || i >= r || j >= c || vis[i][j]) continue;
+
+            vis[i][j] = true;
+            ans.push_back({i, j});
+
+            for (int d = 0; d < 4; ++d) {
+                int ci = i + dx[d];
+                int cj = j + dy[d];
+                if (ci >= 0 && cj >= 0 && ci < r && cj < c && !vis[ci][cj]) {
+                    q.push({ci, cj});
+                }
+            }
+        }
+        return ans;
+    }
+};
