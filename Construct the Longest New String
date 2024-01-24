@@ -1,0 +1,10 @@
+class Solution {
+public:
+    int longestString(int x, int y, int z) {
+        int ans = 0;
+        if(y > x) ans += (z*2) + (x*2) + (x+1)*2;
+        else if(x > y) ans += (z*2) + (2*y) + (y+1)*2;
+        else ans += (4*x) + (2*z);
+        return ans;
+    }
+};
