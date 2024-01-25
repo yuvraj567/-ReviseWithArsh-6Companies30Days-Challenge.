@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+        unordered_map<int, int> map_w, map_l;
+
+        for (auto& m : matches) {
+            map_w[m[0]]++;
+            map_l[m[1]]++;
+        }
+
+        set<int> all_win, loss_one;
+
+        for (auto& m : map_w) {
+            if (map_l.count(m.first) < 1) all_win.insert(m.first);
+        }
+
+        for (auto& m : map_l) {
+            if (m.second == 1) loss_one.insert(m.first);
+        }
+
+        return { vector<int>(all_win.begin(), all_win.end()), vector<int>(loss_one.begin(), loss_one.end()) };
+    }
+};
