@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int minimumCost(vector<int>& start, vector<int>& target, vector<vector<int>>& specialRoads) {
+        auto calculateDistance = [](int x1, int y1, int x2, int y2) {
+            return abs(x1 - x2) + abs(y1 - y2);
+        };
+
+        int minimumCost = INT_MAX;
+        int hashMultiplier = 1e6;
+
+        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<tuple<int, int, int>>> frontier;
+
+        frontier.push({0, start[0], start[1]});
+        unordered_set<long long> visited;
+
+        while (!frontier.empty()) {
+            auto [currentCost, currentX, currentY] = frontier.top();
+            frontier.pop();
+
+            long long hashValue = static_cast<long long>(currentX) * hashMultiplier + currentY;
+          
+            if (visited.count(hashValue)) {
+                continue;
+            }
+          
+            visited.insert(hashValue);
+            minimumCost = min(minimumCost, currentCost + calculateDistance(currentX, currentY, target[0], target[1]));
+
+            // For each special road, calculate costs and push new positions to the queue
+            for (auto& road : specialRoads) {
+                int startRoadX = road[0], startRoadY = road[1];
+                int endRoadX = road[2], endRoadY = road[3];
+                int roadCost = road[4];
+
+                // Calculate cost to the start of the special road plus the road's cost
+                int newCost = currentCost + calculateDistance(currentX, currentY, startRoadX, startRoadY) + roadCost;
+
+                // Push the special road's end position with the updated cost into the queue
+                frontier.push({newCost, endRoadX, endRoadY});
+            }
+        }
+
+        // Return the calculated minimum cost
+        return minimumCost;
+    }
+};
