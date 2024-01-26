@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> beautifulIndices(string s, string a, string b, int k) {
+        int pos = s.find(a);
+        vector<int> res1, res2, res;
+
+        while (pos != string::npos) {
+            res1.push_back(pos);
+            pos = s.find(a, pos + 1);
+        }
+        
+        pos = s.find(b);
+        while (pos != string::npos) {
+            res2.push_back(pos);
+            pos = s.find(b, pos + 1);
+        }
+        
+        for(auto it : res1) {
+            auto ind = lower_bound(res2.begin(), res2.end(), it-k);
+            if(ind == res2.end()){
+                continue;
+            }
+            if (*ind > it + k) continue;
+            res.push_back(it);
+        }
+        return res;
+    }
+};
